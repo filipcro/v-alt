@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { getConnection } from 'typeorm';
-import { authorize } from '../middleware/auth'
+import { authorize } from '../middleware/auth';
 import { createToken } from '../utils/jwt';
 import { User } from '../model/User';
 
@@ -18,7 +18,7 @@ router.get('/', authorize, async (req: Request, res: Response) => {
     try {
         const userContext = getConnection().getRepository(User);
         const user = await userContext.findOne(userId);
-        res.send({ user: (user ? userData(user):{}) });
+        res.send({ user: (user ? userData(user) : {}) });
     } catch (err) {
         res.send({ error: 'User not found.' });
     }
@@ -49,8 +49,8 @@ router.get('/usernametaken', async (req: Request, res: Response) => {
         const userContext = getConnection().getRepository(User);
         const count = await userContext.count({ where: { username } });
         res.send({
-            taken: count > 0,
-            username
+            username,
+            taken: count > 0
         });
     } catch (err) {
         res.send({ error: 'Username check failed.' });
@@ -63,8 +63,8 @@ router.get('/emailtaken', async (req: Request, res: Response) => {
         const userContext = getConnection().getRepository(User);
         const count = await userContext.count({ where: { email } });
         res.send({
-            taken: count > 0,
-            email
+            email,
+            taken: count > 0
         });
     } catch (err) {
         res.send({ error: 'Email check failed.' });
@@ -73,7 +73,7 @@ router.get('/emailtaken', async (req: Request, res: Response) => {
 
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
-    if( !username || !password) {
+    if (!username || !password) {
         return res.send({ error: 'Username and password required' });
     }
     try {

@@ -3,7 +3,6 @@ import { User } from './User';
 import { Icon } from './Icon';
 import { Transaction } from './Transaction';
 
-
 @Entity({ name: 'category' })
 export class Category {
 

@@ -3,5 +3,6 @@
     "rules": {
         "trailing-comma": [false],
         "indent": [true, "spaces", 4],
+        "ter-indent": [true]
     }
 }

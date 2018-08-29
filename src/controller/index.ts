@@ -1,13 +1,15 @@
-import userController from './UserController';
-import iconController from './IconController';
-import currencyController from './CurrencyController';
-import accountController from './AccountController';
-import categoryController from './CategoryController'
+import UserController from './UserController';
+import IconController from './IconController';
+import CurrencyController from './CurrencyController';
+import AccountController from './AccountController';
+import CategoryController from './CategoryController';
+import TransactionController from './TransactionController';
 
 export function applyRoutes(app) {
-    app.use('/user', userController);
-    app.use('/icon', iconController);
-    app.use('/currency', currencyController);
-    app.use('/account', accountController);
-    app.use('/category', categoryController);
+    app.use('/user', UserController);
+    app.use('/icon', IconController);
+    app.use('/currency', CurrencyController);
+    app.use('/account', AccountController);
+    app.use('/category', CategoryController);
+    app.use('/transaction', TransactionController);
 }

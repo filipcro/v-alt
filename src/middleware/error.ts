@@ -11,11 +11,11 @@ export const errorHandling = (err, req, res, next) => {
         });
     }
 
-    if(err) {
+    if (err) {
         return res.status(400).send({
             error: 'Error.'
         });
     }
 
     return next(err, req, res);
-}
+};
