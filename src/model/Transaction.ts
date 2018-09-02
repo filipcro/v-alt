@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Transform } from 'class-transformer';
+
 import { Account } from './Account';
 import { Category } from './Category';
 import { Currency } from './Currency';
@@ -7,6 +9,7 @@ import { Currency } from './Currency';
 export class Transaction {
 
     @PrimaryGeneratedColumn()
+    @Transform(value => value.toString(), { toPlainOnly: true })
     id: number;
 
     @Column({
@@ -36,14 +39,24 @@ export class Transaction {
         type => Currency,
         { nullable: false }
     )
+    @JoinColumn({ name: 'currencyId' })
     currency: Currency;
+
+    @Column({ nullable: false })
+    @Transform(value => value.toString(), { toPlainOnly: true })
+    currencyId: number;
 
     @ManyToOne(
         type => Account,
         account => account.transactions,
         { nullable: false }
     )
+    @JoinColumn({ name: 'accountId' })
     account: Account;
+
+    @Column({ nullable: false })
+    @Transform(value => value.toString(), { toPlainOnly: true })
+    accountId: number;
 
     @ManyToOne(
         type => Category,
@@ -53,5 +66,10 @@ export class Transaction {
             nullable:true
         }
     )
+    @JoinColumn({ name: 'categoryId' })
     category: Category;
+
+    @Column({ nullable: true })
+    @Transform(value => value ? value.toString() : undefined, { toPlainOnly: true })
+    categoryId: number;
 }

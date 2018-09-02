@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { getConnection, Between, Equal } from 'typeorm';
+import { classToPlain } from 'class-transformer';
 
 import { authorize } from '../middleware/auth';
 import { getRate } from '../utils/exchangeRate';
@@ -16,25 +17,19 @@ router.use(authorize);
 
 router.get('/', async (req: Request, res: Response) => {
     const userId = req.user.id;
-    let { startDate, endDate } = req.query;
+    const startDate = new Date(req.query.startDate);
+    const endDate = new Date(req.query.endDate);
     try {
-        startDate = new Date(startDate);
-        endDate = new Date(endDate);
-        const userContext = getConnection().getRepository(User);
-        const user = await userContext.findOne(
-            userId,
-            {
-                relations: [
-                    'accounts',
-                    'accounts.transactions',
-                    'accounts.transactions.currency',
-                    'accounts.transactions.category'
-                ],
-                where: {
-                    'accounts.transactions.dateTime': Between(startDate, endDate)
-                }
-            });
-        res.send({ accounts: user.accounts });
+        const transactions = await getConnection()
+            .getRepository(Transaction)
+            .createQueryBuilder('transaction')
+            .innerJoin('transaction.account', 'account')
+            .where('transaction.dateTime >= :startDate', { startDate })
+            .andWhere('transaction.dateTime <= :endDate', { endDate })
+            .andWhere('account.userId = :userId', { userId })
+            .getMany();
+
+        res.send({ transactions: classToPlain(transactions) });
     } catch (err) {
         res.send({ error: 'Transactions fetching DB error.' });
     }
@@ -43,42 +38,118 @@ router.get('/', async (req: Request, res: Response) => {
 router.post('/', async (req: Request, res: Response) => {
     const userId = req.user.id;
     const accountId = req.body.accountId;
-    const currencyId = req.body.currency;
+    const currencyId = req.body.currencyId;
     const categoryId = req.body.categoryId;
-
+    const dateTime = new Date(req.body.dateTime);
+    const amount = req.body.amount;
+    const description = req.body.description;
     try {
-        const userContext = getConnection().getRepository(User);
-        const curencyContext = getConnection().getRepository(Currency);
         const accountContext = getConnection().getRepository(Account);
         const categoryContext = getConnection().getRepository(Category);
+        const currencyContext = getConnection().getRepository(Currency);
         const transactionContext = getConnection().getRepository(Transaction);
 
-        const user = await userContext.findOne(userId);
-        const currency = await curencyContext.findOne(currencyId);
-        const account = await accountContext.findOne(
-            accountId,
-            { relations: ['user', 'currency'] }
-        );
-        const category = await categoryContext.findOne(categoryId, { relations: ['user'] });
+        const account = await accountContext.findOne(accountId, { relations: ['currency'] });
+        const category = await categoryContext.findOne(categoryId);
+        const currency = await currencyContext.findOne(currencyId);
 
-        if (account.user.id !== userId || category.user.id !== userId) {
-            return res.status(401).send();
+        if (account.userId !== userId) {
+            res.sendStatus(401);
+            return;
         }
 
-        const newTransaction = new Transaction();
-        newTransaction.account = account;
-        newTransaction.category = category;
-        newTransaction.currency = currency;
+        if (Category && category.userId !== userId) {
+            res.sendStatus(401);
+            return;
+        }
 
-        newTransaction.dateTime = new Date(req.body.dateTime);
-        newTransaction.amount = req.body.amount;
-        newTransaction.description = req.body.description;
-        newTransaction.rate = await getRate(account.currency.code, currency.code);
+        const rate = await getRate(account.currency.code, currency.code);
 
-        const transaction = await transactionContext.save(newTransaction);
-        res.send({ transaction });
+        const transaction = new Transaction();
+        transaction.accountId = accountId;
+        transaction.categoryId = categoryId;
+        transaction.currencyId = currencyId;
+        transaction.dateTime = dateTime;
+        transaction.amount = amount;
+        transaction.description = description;
+        transaction.rate = rate;
+        const savedTransaction = await transactionContext.save(transaction);
+
+        res.send({ transactions: [classToPlain(savedTransaction)] });
     } catch (err) {
         res.send({ error: 'Creating transaction failed.' });
+    }
+});
+
+router.put('/:transactionId?', async (req: Request, res: Response) => {
+    const userId = req.user.id;
+    const transactionId = req.params.transactionId || req.body.id;
+    const accountId = req.body.accountId;
+    const currencyId = req.body.currencyId;
+    const categoryId = req.body.categoryId;
+    const dateTime = new Date(req.body.dateTime);
+    const amount = req.body.amount;
+    const description = req.body.description;
+    try {
+        const accountContext = getConnection().getRepository(Account);
+        const categoryContext = getConnection().getRepository(Category);
+        const currencyContext = getConnection().getRepository(Currency);
+        const transactionContext = getConnection().getRepository(Transaction);
+
+        const account = await accountContext.findOne(accountId, { relations: ['currency'] });
+        const transaction = await transactionContext
+            .findOne(transactionId, { relations: ['account'] });
+        const category = await categoryContext.findOne(categoryId);
+        const currency = await currencyContext.findOne(currencyId);
+
+        if (transaction.account.userId !== userId) {
+            res.sendStatus(401);
+            return;
+        }
+
+        if (account.userId !== userId) {
+            res.sendStatus(401);
+            return;
+        }
+
+        if (Category && category.userId !== userId) {
+            res.sendStatus(401);
+            return;
+        }
+
+        const rate = await getRate(account.currency.code, currency.code);
+
+        transaction.accountId = accountId;
+        transaction.categoryId = categoryId;
+        transaction.currencyId = currencyId;
+        transaction.dateTime = dateTime;
+        transaction.amount = amount;
+        transaction.description = description;
+        transaction.rate = rate;
+        const savedTransaction = await transactionContext.save(transaction);
+
+        res.send({ transactions: [classToPlain(savedTransaction)] });
+    } catch (err) {
+        res.send({ error: 'Creating transaction failed.' });
+    }
+});
+
+router.delete('/:transactionId?', async (req: Request, res: Response) => {
+    const userId = req.user.id;
+    const transactionId = req.params.transactionId || req.body.id;
+    try {
+        const transactionContext = getConnection().getRepository(Transaction);
+        const transaction = await transactionContext
+            .findOne(transactionId, { relations: ['account'] });
+
+        if (transaction.account.userId === userId) {
+            await transactionContext.delete(transaction);
+            res.send({ deleted: true });
+        } else {
+            res.sendStatus(401);
+        }
+    } catch (err) {
+        res.send({ error: 'Transaction cannot be deleted.' });
     }
 });
 

@@ -3,8 +3,6 @@ import { getConnection } from 'typeorm';
 import { classToPlain } from 'class-transformer';
 
 import { authorize } from '../middleware/auth';
-import { User } from '../model/User';
-import { Icon } from '../model/Icon';
 import { Category } from '../model/Category';
 
 const router = Router();

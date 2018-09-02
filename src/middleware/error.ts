@@ -17,5 +17,5 @@ export const errorHandling = (err, req, res, next) => {
         });
     }
 
-    return next(err, req, res);
+    next(err, req, res);
 };
