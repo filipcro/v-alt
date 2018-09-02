@@ -1,8 +1,8 @@
 import { Router, Request, Response } from 'express';
 import { getConnection } from 'typeorm';
+import { classToPlain } from 'class-transformer';
 
 import { authorize } from '../middleware/auth';
-
 import { User } from '../model/User';
 import { Icon } from '../model/Icon';
 import { Category } from '../model/Category';
@@ -14,88 +14,81 @@ router.use(authorize);
 router.get('/', async (req: Request, res: Response) => {
     const userId = req.user.id;
     try {
-        const userContext = getConnection().getRepository(User);
-        const user = await userContext
-            .findOne(
-                userId,
-                { relations: ['categories', 'categories.icon'] }
-            );
-        res.send({ categories: user.categories });
+        const categoryContext = getConnection().getRepository(Category);
+        const categories = await categoryContext.find({ where: { userId } });
+        res.send({ categories: classToPlain(categories) });
     } catch (err) {
-        res.send({ error: 'Account fetch failed.' });
+        res.send({ error: 'DB error.' });
     }
 });
 
 router.post('/', async (req: Request, res: Response) => {
     const userId = req.user.id;
+    const name = req.body.name;
+    const incomings = req.body.incomings === true;
+    const outgoings = req.body.outgoings === true;
+    const iconId = req.body.icon;
     try {
-        const userContext = getConnection().getRepository(User);
         const categoryContext = getConnection().getRepository(Category);
-        const iconContext = getConnection().getRepository(Icon);
-
-        const user = await userContext.findOne(userId);
-        const icon = await iconContext.findOne(req.body.icon);
 
         const newCategory = new Category();
-        newCategory.name = req.body.name;
-        newCategory.incomings = req.body.incomings === true;
-        newCategory.outgoings = req.body.outgoings === true;
-
-        newCategory.icon = icon;
-        newCategory.user = user;
+        newCategory.name = name;
+        newCategory.incomings = incomings;
+        newCategory.outgoings = outgoings;
+        newCategory.iconId = iconId;
+        newCategory.userId = userId;
 
         const category = await categoryContext.save(newCategory);
 
-        res.send({ category });
+        res.send({ categories: [classToPlain(category)] });
     } catch (err) {
         res.send({ error: 'Category creation unsucesfull.' });
     }
 });
 
-router.delete('/:categoryId', async (req: Request, res: Response) => {
+router.put('/:categoryId?', async (req: Request, res: Response) => {
     const userId = req.user.id;
-    const categoryId = req.params.categoryId;
+    const categoryId = req.params.categoryId || req.body.id;
+    const name = req.body.name;
+    const incomings = req.body.incomings === true;
+    const outgoings = req.body.outgoings === true;
+    const iconId = req.body.icon;
     try {
         const categoryContext = getConnection().getRepository(Category);
+        const category = await categoryContext.findOne(categoryId);
 
-        const category = await categoryContext.findOne(categoryId, { relations: ['user'] });
-        if (category.user.id === userId) {
-            await categoryContext.delete(category);
-            return res.send({
-                deleted: true,
-                msg: 'Category deleted.'
-            });
+        if (category.userId === userId) {
+            category.name = name;
+            category.incomings = incomings;
+            category.outgoings = outgoings;
+            category.iconId = iconId;
+
+            const savedCategory = await categoryContext.save(category);
+
+            res.send({ categories: [classToPlain(savedCategory)] });
+        } else {
+            res.sendStatus(401);
         }
-        return res.status(401).send();
     } catch (err) {
-        res.send({ error: 'Category cannot be deleted.' });
+        res.send({ error: 'Category cannot be updated.' });
     }
 });
 
-router.put('/:categoryId', async (req: Request, res: Response) => {
+router.delete('/:categoryId?', async (req: Request, res: Response) => {
     const userId = req.user.id;
-    const categoryId = req.params.categoryId;
+    const categoryId = req.params.categoryId || req.body.id;
     try {
         const categoryContext = getConnection().getRepository(Category);
-        const iconContext = getConnection().getRepository(Icon);
+        const category = await categoryContext.findOne(categoryId);
 
-        const category = await categoryContext.findOne(categoryId, { relations: ['user'] });
-
-        if (category.user.id === userId) {
-            const icon = await iconContext.findOne(req.body.icon);
-
-            category.name = req.body.name;
-            category.incomings = req.body.incomings;
-            category.outgoings = req.body.outgoings;
-            category.icon = icon;
-            const savedCategory = await categoryContext.save(category);
-            return res.send({ category: savedCategory });
+        if (category.userId === userId) {
+            await categoryContext.delete(category);
+            res.send({ deleted: true });
+        } else {
+            res.sendStatus(401);
         }
-
-        return res.status(401).send();
-
     } catch (err) {
-        res.send({ error: 'Account cannot be deleted.' });
+        res.send({ error: 'Category cannot be deleted.' });
     }
 });
 

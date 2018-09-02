@@ -32,10 +32,17 @@ export class Transaction {
     })
     rate: number;
 
-    @ManyToOne(type => Currency)
+    @ManyToOne(
+        type => Currency,
+        { nullable: false }
+    )
     currency: Currency;
 
-    @ManyToOne(type => Account, account => account.transactions)
+    @ManyToOne(
+        type => Account,
+        account => account.transactions,
+        { nullable: false }
+    )
     account: Account;
 
     @ManyToOne(

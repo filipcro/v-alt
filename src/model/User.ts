@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, OneToMany } from 'typeorm';
 import { compare, hash } from 'bcrypt';
+import { Exclude, Transform } from 'class-transformer';
 
 import { Account } from './Account';
 import { Category } from './Category';
@@ -10,6 +11,7 @@ const SALT_ROUNDS = 10;
 export class User {
 
     @PrimaryGeneratedColumn()
+    @Transform(value => value.toString(), { toPlainOnly: true })
     id: number;
 
     @Column({
@@ -21,6 +23,7 @@ export class User {
     @Column({
         length: 60
     })
+    @Exclude()
     password: string;
 
     @Column({

@@ -1,24 +1,19 @@
 import { Router, Request, Response } from 'express';
 import { getConnection } from 'typeorm';
+import { classToPlain } from 'class-transformer';
+
 import { authorize } from '../middleware/auth';
 import { createToken } from '../utils/jwt';
 import { User } from '../model/User';
 
 const router = Router();
 
-const userData = (user: User) => ({
-    id: user.id,
-    name: user.name,
-    username: user.username,
-    email: user.email
-});
-
 router.get('/', authorize, async (req: Request, res: Response) => {
     const userId = req.user.id;
     try {
         const userContext = getConnection().getRepository(User);
         const user = await userContext.findOne(userId);
-        res.send({ user: (user ? userData(user) : {}) });
+        res.send({ user: classToPlain(user) });
     } catch (err) {
         res.send({ error: 'User not found.' });
     }
@@ -35,7 +30,7 @@ router.post('/', async (req: Request, res: Response) => {
         const userContext = getConnection().getRepository(User);
         const user = await userContext.save(newUser);
         res.send({
-            user: userData(user),
+            user: classToPlain(user),
             token: createToken(user)
         });
     } catch (err) {
@@ -82,7 +77,7 @@ router.post('/login', async (req, res) => {
 
         if (user && await user.comparePasswords(password)) {
             res.send({
-                user: userData(user),
+                user: classToPlain(user),
                 token: createToken(user)
             });
         } else {

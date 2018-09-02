@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
+import { Transform, Exclude } from 'class-transformer';
+
 import { User } from './User';
 import { Currency } from './Currency';
 import { Transaction } from './Transaction';
@@ -7,6 +9,7 @@ import { Transaction } from './Transaction';
 export class Account {
 
     @PrimaryGeneratedColumn()
+    @Transform(value => value.toString(), { toPlainOnly: true })
     id: number;
 
     @Column({
@@ -14,11 +17,25 @@ export class Account {
     })
     name: string;
 
-    @ManyToOne(type => User, user => user.accounts)
+    @ManyToOne(
+        type => User,
+        user => user.accounts,
+        { nullable: false }
+    )
+    @JoinColumn({ name: 'userId' })
     user: User;
 
-    @ManyToOne(type => Currency)
+    @Column({ nullable: false })
+    @Exclude()
+    userId: number;
+
+    @ManyToOne(type => Currency, { nullable: false })
+    @JoinColumn({ name: 'currencyId' })
     currency: Currency;
+
+    @Column({ nullable: false })
+    @Transform(value => value.toString(), { toPlainOnly: true })
+    currencyId: number;
 
     @OneToMany(type => Transaction, transactions => transactions.account)
     transactions: Transaction[];

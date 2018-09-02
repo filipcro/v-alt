@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { getConnection, Between } from 'typeorm';
+import { getConnection, Between, Equal } from 'typeorm';
 
 import { authorize } from '../middleware/auth';
 import { getRate } from '../utils/exchangeRate';
@@ -16,7 +16,7 @@ router.use(authorize);
 
 router.get('/', async (req: Request, res: Response) => {
     const userId = req.user.id;
-    let { startDate, endDate } = req.body;
+    let { startDate, endDate } = req.query;
     try {
         startDate = new Date(startDate);
         endDate = new Date(endDate);
@@ -31,7 +31,7 @@ router.get('/', async (req: Request, res: Response) => {
                     'accounts.transactions.category'
                 ],
                 where: {
-                    'user.accounts.transactions.dateTime': Between(startDate, endDate)
+                    'accounts.transactions.dateTime': Between(startDate, endDate)
                 }
             });
         res.send({ accounts: user.accounts });
@@ -64,6 +64,7 @@ router.post('/', async (req: Request, res: Response) => {
         if (account.user.id !== userId || category.user.id !== userId) {
             return res.status(401).send();
         }
+
         const newTransaction = new Transaction();
         newTransaction.account = account;
         newTransaction.category = category;
