@@ -1,0 +1,12 @@
+.CategoryListItem {
+    list-style: none;
+    font-size: 1.2em;
+    margin-bottom: 0.5em;
+}
+
+.CategoryListItem-currency {
+    font-size: 0.8em;
+    color: #555;
+    display: inline-block;
+    margin-left: 1em;
+}
