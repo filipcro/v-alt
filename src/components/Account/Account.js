@@ -9,15 +9,18 @@ const Account = ({
     currencies,
     addAccount,
     selectAccount,
-    selectedAccount
+    updateAccount,
+    selectedAccount,
+    removeAccount
 }) => (
     <div>
         {selectedAccount
             ? (
                 <EditAccount
-                    account={accounts[selectedAccount]}
-                    saveAccount={(...a) => console.log(a)}
+                    account={selectedAccount}
+                    saveAccount={updateAccount}
                     selectAccount={selectAccount}
+                    removeAccount={removeAccount}
                 />
             )
             : (
@@ -31,6 +34,7 @@ const Account = ({
             accounts={accounts}
             currencies={currencies}
             selectAccount={selectAccount}
+            selectedAccount={selectedAccount}
         />
     </div>
 );

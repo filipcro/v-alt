@@ -1,7 +1,12 @@
 import { connect } from 'react-redux';
 
 import Account from '../components/Account/Account';
-import { addAccount, selectAccount } from '../actions/accounts';
+import {
+    addAccount,
+    selectAccount,
+    updateAccount,
+    removeAccount
+} from '../actions/accounts';
 
 const getSelectedAccount = (selectedAccount, accounts) => {
     if (selectAccount) {
@@ -18,6 +23,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     addAccount: (name, currency) => dispatch(addAccount(name, currency)),
+    updateAccount: (id, name) => dispatch(updateAccount(id, name)),
+    removeAccount: id => dispatch(removeAccount(id)),
+
     selectAccount: id => dispatch(selectAccount(id))
 });
 

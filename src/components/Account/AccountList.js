@@ -4,7 +4,12 @@ import './AccountList.css';
 
 import AccountListItem from './AccountListItem';
 
-const AccountList = ({ accounts, currencies, selectAccount }) => {
+const AccountList = ({
+    accounts,
+    currencies,
+    selectAccount,
+    selectedAccount
+}) => {
     const accountsListItems = Object.values(accounts)
         .map(account => (
             <AccountListItem
@@ -12,6 +17,7 @@ const AccountList = ({ accounts, currencies, selectAccount }) => {
                 account={account}
                 currencyCode={currencies[account.currencyId].code}
                 selectAccount={selectAccount}
+                selectedAccount={selectedAccount}
             />
         ));
 
