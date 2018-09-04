@@ -52,7 +52,7 @@ router.put('/:accountId?', async (req: Request, res: Response) => {
         if (account.userId === userId) {
             account.name = name;
             const savedAccount = await accountContext.save(account);
-            res.send({ account: [classToPlain(savedAccount)] });
+            res.send({ accounts: [classToPlain(savedAccount)] });
         } else {
             res.sendStatus(401);
         }

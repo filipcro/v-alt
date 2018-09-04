@@ -23,6 +23,7 @@ export class Transaction {
         precision: 10,
         scale: 4
     })
+    @Transform(value => +value, { toPlainOnly: true })
     amount: number;
 
     @Column()

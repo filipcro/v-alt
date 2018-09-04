@@ -17,8 +17,8 @@ router.use(authorize);
 
 router.get('/', async (req: Request, res: Response) => {
     const userId = req.user.id;
-    const startDate = new Date(req.query.startDate);
-    const endDate = new Date(req.query.endDate);
+    const startDate = new Date(req.query.startdate);
+    const endDate = new Date(req.query.enddate);
     try {
         const transactions = await getConnection()
             .getRepository(Transaction)

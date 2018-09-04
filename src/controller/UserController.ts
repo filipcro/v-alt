@@ -39,7 +39,7 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 router.get('/usernametaken', async (req: Request, res: Response) => {
-    const { username } = req.body;
+    const username = req.query.username;
     try {
         const userContext = getConnection().getRepository(User);
         const count = await userContext.count({ where: { username } });
@@ -53,7 +53,7 @@ router.get('/usernametaken', async (req: Request, res: Response) => {
 });
 
 router.get('/emailtaken', async (req: Request, res: Response) => {
-    const { email } = req.body;
+    const email = req.query.email;
     try {
         const userContext = getConnection().getRepository(User);
         const count = await userContext.count({ where: { email } });
@@ -81,7 +81,7 @@ router.post('/login', async (req, res) => {
                 token: createToken(user)
             });
         } else {
-            return res.send({ error: 'Invalid username or password.' });
+            return res.status(401).send({ error: 'Invalid username or password.' });
         }
     } catch (err) {
         return res.send({ error: 'Database error.' });
