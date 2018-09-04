@@ -5,7 +5,8 @@ import App from '../components/App';
 
 
 const mapStateToProps = state => ({
-    user: state.user
+    user: state.user,
+    userStatus: state.userStatus
 });
 
 const mapDispatchToProps = dispatch => ({

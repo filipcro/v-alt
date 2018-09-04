@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import status from '../../constants/userStatus';
 import './LogIn.css';
 
 class LogIn extends Component {
@@ -30,6 +31,8 @@ class LogIn extends Component {
 
     render() {
         const { username, password } = this.state;
+        const { userStatus } = this.props;
+        const ivnalidCredentials = userStatus === status.INVALID_CREDENTIALS;
 
         return (
             <div className="background-gradient">
@@ -37,6 +40,7 @@ class LogIn extends Component {
                     <h2 className="LogIn-header">Prijava</h2>
                     <hr />
                     <form>
+                        {ivnalidCredentials && <span className="LogIn-error">Korisničko ime ili lozinka je neispravno.</span>}
                         <label className="LogIn-label-group">
                             <span>Korisničko ime</span>
                             <input className="LogIn-input" type="text" name="username" value={username} onChange={this.onChange} />

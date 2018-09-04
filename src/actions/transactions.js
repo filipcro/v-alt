@@ -33,7 +33,13 @@ export const fetchTransactions = firstDate => (dispatch) => {
 
     axios.get('/transaction', { params: { startdate, enddate } })
         .then(({ data }) => {
-            dispatch(addItems(data));
+            const parsedTransactions = data
+                .transactions
+                .map(transaction => ({
+                    ...transaction,
+                    dateTime: new Date(transaction.dateTime)
+                }));
+            dispatch(addItems({ transactions: parsedTransactions }));
             dispatch(setLastDate(startdate));
         });
 };

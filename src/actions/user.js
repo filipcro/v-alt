@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SET_USER, LOG_OUT } from '../constants/actionTypes';
+import { LOG_IN, LOG_OUT, INVALID_CREDENTIALS } from '../constants/actionTypes';
 import { removeToken, setToken } from '../auth';
 
 import fetchCurrencies from './currencies';
@@ -15,7 +15,7 @@ export const setUser = (user, token) => {
 
     return {
         user,
-        type: SET_USER
+        type: LOG_IN
     };
 };
 
@@ -26,28 +26,45 @@ export const logOut = () => {
     };
 };
 
+export const invalidCredentials = () => ({
+    type: INVALID_CREDENTIALS
+});
+
 export const fetchUser = () => (dispatch) => {
     axios.get('/user')
         .then(({ data }) => {
             dispatch(setUser(data.user));
-
-            dispatch(fetchIcons());
-            dispatch(fetchCurrencies());
-            dispatch(fetchAccounts());
-            dispatch(fetchCategories());
-            dispatch(fetchTransactions());
         }, (error) => {
-            if (error.status === 401) {
+            if (error.response.status === 401) {
                 dispatch(logOut());
             }
-        });
+        }).then(() => Promise.all([
+            dispatch(fetchIcons()),
+            dispatch(fetchCurrencies())
+        ])).then(() => Promise.all([
+            dispatch(fetchCategories()),
+            dispatch(fetchAccounts())
+        ]))
+        .then(() => dispatch(fetchTransactions()));
 };
 
 export const logIn = (username, password) => (dispatch) => {
     axios.post('/user/login', { username, password })
         .then(({ data }) => {
             dispatch(setUser(data.user, data.token));
-        });
+        }, (error) => {
+            if (error.response.status === 401) {
+                dispatch(logOut());
+                dispatch(invalidCredentials());
+            }
+        }).then(() => Promise.all([
+            dispatch(fetchIcons()),
+            dispatch(fetchCurrencies())
+        ])).then(() => Promise.all([
+            dispatch(fetchCategories()),
+            dispatch(fetchAccounts())
+        ]))
+        .then(() => dispatch(fetchTransactions()));
 };
 
 export const signUp = (username, password, email, name) => (dispatch) => {

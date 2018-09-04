@@ -10,7 +10,7 @@ const CategoryList = ({ categories, icons }) => {
             <CategoryListItem
                 key={category.id}
                 category={category}
-                iconSVG={icons[category.iconId].svg}
+                icon={icons[category.iconId]}
             />
         ));
 

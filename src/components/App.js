@@ -16,6 +16,7 @@ class App extends Component {
     render() {
         const {
             user,
+            userStatus,
             logIn,
             signUp,
             logOut
@@ -25,7 +26,7 @@ class App extends Component {
             <Switch>
                 <Route
                     path="/login"
-                    render={() => (user ? (<Redirect to="/" />) : (<LogIn logIn={logIn} />))}
+                    render={() => (user ? (<Redirect to="/" />) : (<LogIn logIn={logIn} userStatus={userStatus} />))}
                 />
                 <Route
                     path="/signup"

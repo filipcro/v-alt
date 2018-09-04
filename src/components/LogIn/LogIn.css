@@ -12,6 +12,12 @@
     color: #dd7017 
 }
 
+.LogIn-error {
+    font-size: 0.8em;
+    color: #df2b13;
+    display: block;
+}
+
 .LogIn-input {
     margin: 0.4em 0;
     padding: 0.4em;

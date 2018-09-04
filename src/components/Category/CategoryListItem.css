@@ -2,6 +2,8 @@
     list-style: none;
     font-size: 1.2em;
     margin-bottom: 0.5em;
+    display: flex;
+    align-items: center;
 }
 
 .CategoryListItem-currency {

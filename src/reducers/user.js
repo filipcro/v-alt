@@ -1,8 +1,8 @@
-import { SET_USER, LOG_OUT } from '../constants/actionTypes';
+import { LOG_IN, LOG_OUT } from '../constants/actionTypes';
 
 const user = (state = null, action) => {
     switch (action.type) {
-        case SET_USER:
+        case LOG_IN:
             return action.user;
         case LOG_OUT:
             return null;

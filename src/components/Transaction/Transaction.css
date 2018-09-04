@@ -1,0 +1,18 @@
+.Transaction {
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (min-width: 768px) {
+    .Transaction {
+        flex-direction: row-reverse;
+    }
+}
+
+.Transaction-list {
+    flex-grow: 3;
+}
+
+.Transaction-filter {
+    flex-grow: 2;
+}

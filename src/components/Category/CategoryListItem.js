@@ -2,14 +2,13 @@ import React from 'react';
 
 import './CategoryListItem.css';
 
+import Icon from '../Icon';
 
-const CategoryListItem = ({ category, iconSVG }) => (
+const CategoryListItem = ({ category, icon }) => (
     <li className="CategoryListItem">
-        <svg
-            height="32"
-            width="32"
+        <Icon
+            icon={icon}
             className="CategoryListItem-icon"
-            dangerouslySetInnerHTML={{ __html: iconSVG }}
         />
         <span>{category.name}</span>
     </li>
