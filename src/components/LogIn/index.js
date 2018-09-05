@@ -41,11 +41,11 @@ class LogIn extends Component {
                     <hr />
                     <form>
                         {ivnalidCredentials && <span className="LogIn-error">Korisničko ime ili lozinka je neispravno.</span>}
-                        <label className="LogIn-label-group">
+                        <label className="label-group">
                             <span>Korisničko ime</span>
                             <input className="LogIn-input" type="text" name="username" value={username} onChange={this.onChange} />
                         </label>
-                        <label className="LogIn-label-group">
+                        <label className="label-group">
                             <span>Lozinka</span>
                             <input className="LogIn-input" type="password" name="password" value={password} onChange={this.onChange} />
                         </label>

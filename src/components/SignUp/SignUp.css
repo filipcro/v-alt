@@ -27,11 +27,6 @@
     border: solid 1px #aaa;
 }
 
-.SignUp-label-group {
-    display: block;
-    margin-bottom: 1.2em;
-} 
-
 .SignUp-optional {
     display: block;
     color: #444;

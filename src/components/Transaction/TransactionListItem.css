@@ -6,9 +6,15 @@
 
 .TransactionListItem-row {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+}
+
+@media screen and (min-width: 600px) {
+    .TransactionListItem-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
 }
 
 .TransactionListItem-icon-group {

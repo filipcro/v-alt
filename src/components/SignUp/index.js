@@ -66,21 +66,21 @@ class SignUp extends Component {
                     <h2 className="SignUp-header">Registracija</h2>
                     <hr />
                     <form>
-                        <label className="SignUp-label-group">
+                        <label className="label-group">
                             <span>Korisničko ime</span>
                             {usernameTaken && <span className="SignUp-error">Korisničko ime se već koristi.</span>}
                             <input className="SignUp-input" type="text" name="username" value={username} onChange={this.onChange} />
                         </label>
-                        <label className="SignUp-label-group">
+                        <label className="label-group">
                             <span>Lozinka</span>
                             <input className="SignUp-input" type="password" name="password" value={password} onChange={this.onChange} />
                         </label>
                         <span className="SignUp-optional">Opcionalna polja:</span>
-                        <label className="SignUp-label-group">
+                        <label className="label-group">
                             <span>Ime i prezime</span>
                             <input className="SignUp-input" type="text" name="name" value={name} onChange={this.onChange} />
                         </label>
-                        <label className="SignUp-label-group">
+                        <label className="label-group">
                             <span>E-mail</span>
                             {emailTaken && <span className="SignUp-error">Email adresa se već koristi.</span>}
                             <input className="SignUp-input" type="text" name="email" value={email} onChange={this.onChange} />

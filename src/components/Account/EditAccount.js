@@ -14,7 +14,7 @@ const EditAccount = ({
         <div className="EditAccount">
             <h1>Izmjeni naziv računa</h1>
             <form className="EditAccount-form">
-                <label className="EditAccount-label-group">
+                <label className="label-group">
                     <span>Naziv računa: </span>
                     <input
                         type="text"

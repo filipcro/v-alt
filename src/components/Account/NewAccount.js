@@ -21,11 +21,11 @@ const NewAccount = ({ currencies, addAccount }) => {
                     name.value = '';
                 }}
             >
-                <label className="NewAccount-label-group">
+                <label className="label-group">
                     <span>Naziv računa: </span>
                     <input type="text" name="name" ref={(node) => { name = node; }} />
                 </label>
-                <label className="NewAccount-label-group">
+                <label className="label-group">
                     <span>Valuta: </span>
                     <select ref={(node) => { select = node; }}>
                         {options}

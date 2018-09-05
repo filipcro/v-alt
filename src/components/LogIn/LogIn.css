@@ -26,11 +26,6 @@
     border: solid 1px #aaa;
 }
 
-.LogIn-label-group {
-    display: block;
-    margin-bottom: 1.2em;
-} 
-
 .LogIn-button {
     width: 100%;
     background-color: #dd7017;

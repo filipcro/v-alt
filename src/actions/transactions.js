@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 
 import store from '../store';
 import { addItems } from './items';
@@ -37,11 +38,27 @@ export const fetchTransactions = firstDate => (dispatch) => {
                 .transactions
                 .map(transaction => ({
                     ...transaction,
-                    dateTime: new Date(transaction.dateTime)
+                    dateTime: moment(transaction.dateTime)
                 }));
             dispatch(addItems({ transactions: parsedTransactions }));
             dispatch(setLastDate(startdate));
         });
 };
 
-export const addTransaction = () => {};
+export const addTransaction = (
+    amount,
+    currency,
+    dateTime,
+    account,
+    category,
+    description
+) => (dispatch) => {
+    axios.post('/transaction', {
+        amount,
+        dateTime: dateTime.toISOString(),
+        category,
+        description,
+        currencyId: currency,
+        accountID: account
+    }).then(({ data }) => dispatch(addItems(data)));
+};

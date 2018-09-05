@@ -3,6 +3,8 @@ import React from 'react';
 import Icon from '../Icon';
 
 import './TransactionListItem.css';
+import AdditionsSVG from './up-green.svg';
+import SubrtactionsSVG from './down-red.svg';
 
 const TransactionListItem = ({
     transaction,
@@ -13,14 +15,18 @@ const TransactionListItem = ({
 }) => (
     <div className="TransactionListItem">
         <div className="TransactionListItem-row">
-            <div>
-                {transaction.dateTime.toLocaleString('hr-HR')}
-            </div>
-            <div>
+            <div className="TransactionListItem-icon-group">
+                {transaction.amount < 0
+                    ? <img src={SubrtactionsSVG} alt="rashod" />
+                    : <img src={AdditionsSVG} alt="prihod" />
+                }
                 {transaction.amount.toLocaleString('hr-HR', {
                     style: 'currency',
                     currency: currency.code
                 })}
+            </div>
+            <div>
+                {transaction.dateTime.format('dddd,  DD.MM.YYYY, H:mm')}
             </div>
         </div>
         <div className="TransactionListItem-row">

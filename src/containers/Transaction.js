@@ -1,15 +1,33 @@
 import { connect } from 'react-redux';
 
+import { addTransaction } from '../actions/transactions';
 import Transaction from '../components/Transaction/Transaction';
 
 const mapStateToProps = state => ({
-    transactions: state.transactions,
     accounts: state.accounts,
     categories: state.categories,
-    icons: state.icons,
     currencies: state.currencies
 });
 
+const mapDispatchToProps = dispatch => ({
+    addTransaction: (
+        amount,
+        currency,
+        dateTime,
+        account,
+        category,
+        description
+    ) => dispatch(addTransaction(
+        amount,
+        currency,
+        dateTime,
+        account,
+        category,
+        description
+    ))
+});
+
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(Transaction);

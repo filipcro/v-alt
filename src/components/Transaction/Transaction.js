@@ -1,28 +1,34 @@
 import React from 'react';
 
-import TransactionList from './TransactionList';
+import TransactionList from '../../containers/TransactionList';
+import TransactionFilter from '../../containers/TransactionFilter';
+import NewTransaction from './NewTransaction';
 
 import './Transaction.css';
 
 const Transaction = ({
-    transactions,
     currencies,
     accounts,
     categories,
-    icons
+    addTransaction
 }) => (
-    <div className="Transaction">
-        <div className="Transaction-filter">
-            
-        </div>
-        <div className="Transaction-list">
-            <TransactionList
-                transactions={transactions}
-                currencies={currencies}
+    <div>
+        <div className="Transaction-edit">
+            <NewTransaction
                 accounts={accounts}
                 categories={categories}
-                icons={icons}
+                currencies={currencies}
+                addTransaction={addTransaction}
             />
+        </div>
+
+        <div className="Transaction">
+            <div className="Transaction-filter">
+                <TransactionFilter />
+            </div>
+            <div className="Transaction-list">
+                <TransactionList />
+            </div>
         </div>
     </div>
 );

@@ -7,11 +7,6 @@
     padding-left: 2em;
 }
 
-.EditAccount-label-group {
-    display: block;
-    margin-bottom: 1.2em;
-} 
-
 .EditAccount-save-account,
 .EditAccount-delete-account,
 .EditAccount-cancel {

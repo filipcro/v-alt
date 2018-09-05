@@ -9,8 +9,8 @@ const TransactionList = ({
     categories,
     icons
 }) => {
-    const transactionsItems = Object.values(transactions)
-        .map((transaction) => {
+    const transactionsItems = transactions.map(
+        (transaction) => {
             const category = categories[transaction.categoryId];
             let icon = null;
             if (category) {
@@ -18,6 +18,7 @@ const TransactionList = ({
             }
             const account = accounts[transaction.accountId];
             const currency = currencies[transaction.currencyId];
+
             return (
                 <TransactionListItem
                     key={transaction.id}
@@ -28,7 +29,8 @@ const TransactionList = ({
                     icon={icon}
                 />
             );
-        });
+        }
+    );
 
     return (
         <div>
