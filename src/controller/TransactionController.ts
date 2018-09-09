@@ -29,7 +29,21 @@ router.get('/', async (req: Request, res: Response) => {
             .andWhere('account.userId = :userId', { userId })
             .getMany();
 
-        res.send({ transactions: classToPlain(transactions) });
+        const accountSums = await getConnection()
+            .getRepository(Account)
+            .createQueryBuilder('account')
+            .select('SUM(transaction.amount * transaction.rate)', 'sum')
+            .addSelect('account.id', 'id')
+            .leftJoin(
+                'account.transactions',
+                'transaction',
+                'transaction.dateTime < :startDate',
+                { startDate }
+            ).where('account.userId = :userId', { userId })
+            .groupBy('account.id')
+            .getRawMany();
+
+        res.send({ accountSums, transactions: classToPlain(transactions) });
     } catch (err) {
         res.send({ error: 'Transactions fetching DB error.' });
     }
