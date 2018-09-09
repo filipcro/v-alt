@@ -31,7 +31,7 @@ const NewAccount = ({ currencies, addAccount }) => {
                         {options}
                     </select>
                 </label>
-                <button type="submit" className="NewAccount-add-account">
+                <button type="submit" className="btn-save">
                     Dodaj
                 </button>
             </form>

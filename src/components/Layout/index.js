@@ -4,7 +4,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import MenuBar from '../MenuBar';
 import Account from '../../containers/Account';
 import Category from '../../containers/Category';
-import Transaction from '../../containers/Transaction';
+import Transaction from '../Transaction/Transaction';
 
 import './Layout.css';
 

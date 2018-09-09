@@ -21,7 +21,7 @@ const TransactonFilter = ({
                 <input
                     type="checkbox"
                     name={account.name}
-                    value={checkedAccounts[account.id]}
+                    defaultChecked={checkedAccounts[account.id]}
                     onChange={() => switchCheckedAccount(account.id)}
                 />
                 <span>{account.name}</span>
@@ -34,7 +34,7 @@ const TransactonFilter = ({
                 <input
                     type="checkbox"
                     name={category.name}
-                    value={checkedCategories[category.id]}
+                    defaultChecked={checkedCategories[category.id]}
                     onChange={() => switchCheckedCategory(category.id)}
                 />
                 <span>{category.name}</span>
@@ -55,7 +55,7 @@ const TransactonFilter = ({
                 <input
                     type="checkbox"
                     name="noCategory"
-                    value={checkedCategories['0']}
+                    defaultChecked={checkedCategories['0']}
                     onChange={() => switchCheckedCategory('0')}
                 />
                 <span><i>Bez kategorije</i></span>

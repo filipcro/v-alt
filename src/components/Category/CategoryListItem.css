@@ -12,3 +12,18 @@
     display: inline-block;
     margin-left: 1em;
 }
+
+.CategoryListItem-button {
+    background-color: #fff;
+    color: #dd7017;
+    border: none;
+    padding: 0.4em;
+    border: 1px solid #dd7017;
+    margin-left: 1em;
+    border-radius: 0.4em;
+}
+
+.CategoryListItem-button:hover {
+    color: #fff;
+    background-color: #dd7017;
+}

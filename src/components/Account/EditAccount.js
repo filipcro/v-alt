@@ -25,7 +25,7 @@ const EditAccount = ({
                 </label>
                 <button
                     type="button"
-                    className="EditAccount-save-account"
+                    className="btn-save"
                     onClick={(e) => {
                         e.preventDefault();
                         saveAccount(account.id, name.value);
@@ -36,7 +36,7 @@ const EditAccount = ({
                 </button>
                 <button
                     type="button"
-                    className="EditAccount-delete-account"
+                    className="btn-delete"
                     onClick={(e) => {
                         e.preventDefault();
                         removeAccount(account.id);
@@ -46,7 +46,7 @@ const EditAccount = ({
                     Izbriši račun
                 </button>
                 <button
-                    className="EditAccount-cancel"
+                    className="btn-cancel"
                     type="button"
                     onClick={(e) => {
                         e.preventDefault();

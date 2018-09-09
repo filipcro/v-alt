@@ -7,7 +7,8 @@ const TransactionList = ({
     currencies,
     accounts,
     categories,
-    icons
+    icons,
+    selectTransaction
 }) => {
     const transactionsItems = transactions.map(
         (transaction) => {
@@ -27,6 +28,7 @@ const TransactionList = ({
                     category={category}
                     currency={currency}
                     icon={icon}
+                    selectTransaction={selectTransaction}
                 />
             );
         }

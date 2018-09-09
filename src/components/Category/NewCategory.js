@@ -6,7 +6,7 @@ const EditAccount = ({ icons, addCategory }) => {
     let name;
     let select;
     let incomings;
-    let outgoing;
+    let outgoings;
 
     const options = Object.values(icons).map(
         icon => <option key={icon.id} value={icon.id}>{icon.name}</option>
@@ -16,13 +16,13 @@ const EditAccount = ({ icons, addCategory }) => {
         <div className="NewCategory">
             <h1>Nova kategorija</h1>
             <form
-                className="NewAccount-form"
+                className="NewCategory-form"
                 onSubmit={(e) => {
                     e.preventDefault();
-                    addCategory(name.value, incomings.checked, outgoing.checked, select.value);
+                    addCategory(name.value, incomings.checked, outgoings.checked, select.value);
                     name.value = '';
                     incomings.checked = false;
-                    outgoing.checked = false;
+                    outgoings.checked = false;
                 }}
             >
                 <label className="label-group">
@@ -41,9 +41,9 @@ const EditAccount = ({ icons, addCategory }) => {
                 </label>
                 <label className="label-group">
                     <span>Rashodi: </span>
-                    <input type="checkbox" name="outgoings" ref={(node) => { outgoing = node; }} />
+                    <input type="checkbox" name="outgoings" ref={(node) => { outgoings = node; }} />
                 </label>
-                <button type="submit" className="NewCategory-add-account">
+                <button type="submit" className="btn-save">
                     Dodaj
                 </button>
             </form>

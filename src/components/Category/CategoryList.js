@@ -4,13 +4,20 @@ import './CategoryList.css';
 
 import CategoryListItem from './CategoryListItem';
 
-const CategoryList = ({ categories, icons }) => {
+const CategoryList = ({
+    categories,
+    icons,
+    selectCategory,
+    selectedCategory
+}) => {
     const categoriesListItems = Object.values(categories)
         .map(category => (
             <CategoryListItem
                 key={category.id}
                 category={category}
                 icon={icons[category.iconId]}
+                selectCategory={selectCategory}
+                selectedCategory={selectedCategory}
             />
         ));
 

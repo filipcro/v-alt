@@ -6,15 +6,3 @@
 .NewAccount-form {
     padding-left: 2em;
 }
-
-.NewAccount-add-account {
-    width: 100%;
-    background-color: #5fb324;
-    color: #fff;
-    padding: 10px;
-    border: none;
-}
-
-.NewAccount-add-account:hover {
-    background-color: #73cc33;
-}

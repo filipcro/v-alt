@@ -1,5 +1,7 @@
 import { connect } from 'react-redux';
 
+import { selectTransaction } from '../actions/transactions';
+
 import TransactionList from '../components/Transaction/TransactionList';
 
 const getTransactions = (
@@ -30,6 +32,11 @@ const mapStateToProps = state => ({
     currencies: state.currencies
 });
 
+const mapDispatchToProps = dispatch => ({
+    selectTransaction: id => dispatch(selectTransaction(id))
+});
+
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(TransactionList);

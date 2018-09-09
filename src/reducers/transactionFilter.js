@@ -4,7 +4,8 @@ import {
     SET_START_DATE,
     SET_END_DATE,
     SWITCH_CHECK_ACCOUNT,
-    SWITCH_CHECK_CATEGORY
+    SWITCH_CHECK_CATEGORY,
+    ADD_ITEMS
 } from '../constants/actionTypes';
 
 const transactionFilter = (state, action) => {
@@ -13,7 +14,9 @@ const transactionFilter = (state, action) => {
             endDate: moment(),
             startDate: moment().subtract(1, 'months'),
             checkedAccounts: {},
-            checkedCategories: {}
+            checkedCategories: {
+                0: true
+            }
         };
     }
 
@@ -45,6 +48,34 @@ const transactionFilter = (state, action) => {
             [action.category]: !(state.checkedCategories[action.category])
         };
         return { ...state, checkedCategories };
+    }
+
+    if (action.type === ADD_ITEMS && action.items.categories) {
+        const newCheckedCategories = {};
+        action.items.categories.forEach(
+            (category) => {
+                newCheckedCategories[category.id] = true;
+            }
+        );
+        const checkedCategories = {
+            ...state.checkedCategories,
+            ...newCheckedCategories
+        };
+        return { ...state, checkedCategories };
+    }
+
+    if (action.type === ADD_ITEMS && action.items.accounts) {
+        const newCheckedAccounts = {};
+        action.items.accounts.forEach(
+            (account) => {
+                newCheckedAccounts[account.id] = true;
+            }
+        );
+        const checkedAccounts = {
+            ...state.checkedAccounts,
+            ...newCheckedAccounts
+        };
+        return { ...state, checkedAccounts };
     }
 
     return state;

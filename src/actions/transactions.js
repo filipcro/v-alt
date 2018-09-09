@@ -2,13 +2,31 @@ import axios from 'axios';
 import moment from 'moment';
 
 import store from '../store';
-import { addItems } from './items';
+
+import {
+    addItems,
+    removeItem,
+    selectItem,
+    unselectItem
+} from './items';
+
 import { SET_LAST_DATE } from '../constants/actionTypes';
 
 const setLastDate = lastDate => ({
     lastDate,
     type: SET_LAST_DATE
 });
+
+const addTransactionAsItem = (data) => {
+    const transactions = data
+        .transactions
+        .map(transaction => ({
+            ...transaction,
+            dateTime: moment(transaction.dateTime)
+        }));
+
+    return addItems({ transactions });
+};
 
 export const fetchTransactions = firstDate => (dispatch) => {
     const { lastDate } = store.getState();
@@ -18,47 +36,53 @@ export const fetchTransactions = firstDate => (dispatch) => {
     if (lastDate) {
         enddate = lastDate;
     } else {
-        enddate = new Date();
+        enddate = moment();
     }
 
     if (firstDate) {
         startdate = firstDate;
     } else {
-        startdate = new Date(enddate);
-        startdate.setMonth(startdate.getMonth() - 1);
+        startdate = moment(enddate).subtract(1, 'months');
     }
 
-    if (startdate.getTime() > enddate.getTime()) {
+    if (startdate > enddate) {
         return;
     }
 
-    axios.get('/transaction', { params: { startdate, enddate } })
+    axios.get('/transaction', {
+        params: {
+            startdate: startdate.toISOString(),
+            enddate: enddate.toISOString()
+        }
+    }).then(({ data }) => {
+        dispatch(addTransactionAsItem(data));
+        dispatch(setLastDate(startdate));
+    });
+};
+
+export const addTransaction = transaction => (dispatch) => {
+    axios.post('/transaction', {
+        ...transaction,
+        dateTime: transaction.dateTime.toISOString()
+    }).then(({ data }) => dispatch(addTransactionAsItem(data)));
+};
+
+export const updateTransaction = (id, transaction) => (dispatch) => {
+    axios.put(`/transaction/${id}`, {
+        ...transaction,
+        dateTime: transaction.dateTime.toISOString()
+    }).then(({ data }) => dispatch(addTransactionAsItem(data)));
+};
+
+export const removeTransaction = id => (dispatch) => {
+    axios.delete(`/transaction/${id}`)
         .then(({ data }) => {
-            const parsedTransactions = data
-                .transactions
-                .map(transaction => ({
-                    ...transaction,
-                    dateTime: moment(transaction.dateTime)
-                }));
-            dispatch(addItems({ transactions: parsedTransactions }));
-            dispatch(setLastDate(startdate));
+            if (data.deleted) {
+                dispatch(removeItem({ transactions: id }));
+            }
         });
 };
 
-export const addTransaction = (
-    amount,
-    currency,
-    dateTime,
-    account,
-    category,
-    description
-) => (dispatch) => {
-    axios.post('/transaction', {
-        amount,
-        dateTime: dateTime.toISOString(),
-        category,
-        description,
-        currencyId: currency,
-        accountID: account
-    }).then(({ data }) => dispatch(addItems(data)));
-};
+export const selectTransaction = selectItem('transaction');
+
+export const unselectTransaction = unselectItem('transaction');

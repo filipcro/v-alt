@@ -4,20 +4,21 @@ import Icon from '../Icon';
 
 import './TransactionListItem.css';
 import AdditionsSVG from './up-green.svg';
-import SubrtactionsSVG from './down-red.svg';
+import SubtractionsSVG from './down-red.svg';
 
 const TransactionListItem = ({
     transaction,
     currency,
     account,
     category,
-    icon
+    icon,
+    selectTransaction
 }) => (
     <div className="TransactionListItem">
         <div className="TransactionListItem-row">
             <div className="TransactionListItem-icon-group">
                 {transaction.amount < 0
-                    ? <img src={SubrtactionsSVG} alt="rashod" />
+                    ? <img src={SubtractionsSVG} alt="rashod" />
                     : <img src={AdditionsSVG} alt="prihod" />
                 }
                 {transaction.amount.toLocaleString('hr-HR', {
@@ -40,7 +41,14 @@ const TransactionListItem = ({
             )}
         </div>
         <div className="TransactionListItem-row">
-            {transaction.description}
+            <span>{transaction.description}</span>
+            <button
+                className="AccountListItem-button"
+                type="button"
+                onClick={() => selectTransaction(transaction.id)}
+            >
+                Izmjeni
+            </button>
         </div>
     </div>
 );
