@@ -24,9 +24,7 @@ const mapDispatchToProps = dispatch => ({
     switchCheckedCategory: categoryId => dispatch(switchCheckedCategory(categoryId))
 });
 
-const TransactionFilterContainer = connect(
+export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(TransactionFilter);
-
-export default TransactionFilterContainer;

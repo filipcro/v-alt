@@ -66,42 +66,44 @@ input[type='checkbox'] {
 .btn-save,
 .btn-delete,
 .btn-cancel {
-    color: #fff;
-    border: none;
-    padding: 10px;
-    width: 100%;
-    margin-bottom: 1em;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 1em;
 }
 
 .btn-cancel {
-    width: 100%;
+  width: 100%;
 }
 
 .btn-save {
-    background-color: #5fb324;
+  background-color: #5fb324;
 }
 
 .btn-save:hover {
-    background-color: #73cc33;
+  background-color: #73cc33;
 }
 
 .btn-delete {
-    background-color: #df2b13;
+  background-color: #df2b13;
 }
 
 .btn-delete:hover {
-    background-color: #f05742;
+  background-color: #f05742;
 }
 
 .btn-cancel {
-    background-color: #dd7017;
+  background-color: #dd7017;
 }
 
 .EditAccount-cancel:hover {
-    background-color: #e98f46;
+  background-color: #e98f46;
 }
 
-
+td, th {
+  padding: 0.5em 1em;
+}
 
 
 

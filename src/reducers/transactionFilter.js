@@ -11,8 +11,8 @@ import {
 const transactionFilter = (state, action) => {
     if (state === undefined) {
         return {
-            endDate: moment(),
-            startDate: moment().subtract(1, 'months'),
+            endDate: moment().add(1, 'days').startOf('day'),
+            startDate: moment().subtract(1, 'months').startOf('day'),
             checkedAccounts: {},
             checkedCategories: {
                 0: true

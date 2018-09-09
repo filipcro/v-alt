@@ -44,9 +44,9 @@ const TransactonFilter = ({
     return (
         <div className="TransactionFilter">
             <h2>Datum početka</h2>
-            <DateTime locale="hr" value={startDate} onChange={setStartDate} />
+            <DateTime locale="hr" value={startDate} onChange={setStartDate} timeFormat={false} />
             <h2>Datum završetka</h2>
-            <DateTime locale="hr" value={endDate} onChange={setEndDate} />
+            <DateTime locale="hr" value={endDate} onChange={setEndDate} timeFormat={false} />
             <h2>Prikazani računi</h2>
             {accountsCheckboxes}
             <h2>Prikazane kategorije</h2>

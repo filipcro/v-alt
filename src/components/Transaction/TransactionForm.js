@@ -91,8 +91,15 @@ class TransactionForm extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        const { transaction } = props;
-        const { transactionId } = state;
+        const { transaction, accounts } = props;
+        const { transactionId, account } = state;
+
+        if (accounts && !account) {
+            return {
+                ...state,
+                account: Object.keys(accounts)[0]
+            };
+        }
 
         if (transaction && transaction.id !== state.transactionId) {
             return {

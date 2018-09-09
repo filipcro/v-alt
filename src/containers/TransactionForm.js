@@ -22,11 +22,9 @@ const mapDispatchToProps = dispatch => ({
     selectTransaction: id => dispatch(selectTransaction(id))
 });
 
-const TransactionFormContainer = connect(
+export default connect(
     mapStateToProps,
     mapDispatchToProps,
     null,
     { pure: false }
 )(TransactionForm);
-
-export default TransactionFormContainer;

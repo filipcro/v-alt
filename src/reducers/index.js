@@ -17,6 +17,7 @@ const rootReducer = combineReducers({
     icons: items('icons'),
     accounts: items('accounts'),
     categories: items('categories'),
+    accountSums: items('accountSums'),
     selectedAccount: selectedItem('account'),
     selectedCategory: selectedItem('category'),
     selectedTransaction: selectedItem('transaction')

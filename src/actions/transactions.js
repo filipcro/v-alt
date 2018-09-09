@@ -56,6 +56,7 @@ export const fetchTransactions = firstDate => (dispatch) => {
         }
     }).then(({ data }) => {
         dispatch(addTransactionAsItem(data));
+        dispatch(addItems({ accountSums: data.accountSums }));
         dispatch(setLastDate(startdate));
     });
 };

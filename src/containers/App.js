@@ -15,11 +15,9 @@ const mapDispatchToProps = dispatch => ({
     signUp: (username, password, email, name) => dispatch(signUp(username, password, email, name))
 });
 
-const AppContainer = connect(
+export default connect(
     mapStateToProps,
     mapDispatchToProps,
     null,
     { pure: false }
 )(App);
-
-export default AppContainer;
