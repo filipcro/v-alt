@@ -5,7 +5,12 @@ import { Account } from './Account';
 import { Category } from './Category';
 import { Currency } from './Currency';
 
-@Entity({ name: 'transactions' })
+@Entity({
+    name: 'transactions',
+    orderBy: {
+        dateTime: 'DESC'
+    }
+})
 export class Transaction {
 
     @PrimaryGeneratedColumn()

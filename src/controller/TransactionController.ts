@@ -120,7 +120,7 @@ router.put('/:transactionId?', async (req: Request, res: Response) => {
         const rate = await getRate(account.currency.code, currency.code);
 
         transaction.accountId = accountId;
-        transaction.categoryId = categoryId;
+        transaction.categoryId = categoryId || null;
         transaction.currencyId = currencyId;
         transaction.dateTime = dateTime;
         transaction.amount = amount;
