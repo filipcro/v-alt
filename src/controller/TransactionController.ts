@@ -43,7 +43,14 @@ router.get('/', async (req: Request, res: Response) => {
             .groupBy('account.id')
             .getRawMany();
 
-        res.send({ accountSums, transactions: classToPlain(transactions) });
+        res.send({
+            accountSums: accountSums.map(accountSum => ({
+                id: accountSum.id.toString(),
+                sum: accountSum.sum || 0
+            })
+        ),
+            transactions: classToPlain(transactions)
+        });
     } catch (err) {
         res.send({ error: 'Transactions fetching DB error.' });
     }
