@@ -172,7 +172,7 @@ class TransactionForm extends Component {
 
         return (
             <div className="NewAccount">
-                <h1>Nova transakcija</h1>
+                <h1>{transactionId ? 'Uredi transakciju' : 'Nova transakcija'}</h1>
                 <form className="NewAccount-form">
                     <label className="label-group">
                         <span>Iznos: </span>

@@ -18,19 +18,17 @@ const AccountBalance = ({
         ));
 
     return (
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Račun</th>
-                        <th>Stanje računa</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tableRows}
-                </tbody>
-            </table>
-        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Račun</th>
+                    <th>Stanje računa</th>
+                </tr>
+            </thead>
+            <tbody>
+                {tableRows}
+            </tbody>
+        </table>
     );
 };
 
