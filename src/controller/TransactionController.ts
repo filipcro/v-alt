@@ -84,7 +84,7 @@ router.post('/', async (req: Request, res: Response) => {
             return;
         }
 
-        const rate = await getRate(account.currency.code, currency.code);
+        const rate = await getRate(account.currency.code, currency.code, dateTime);
 
         const transaction = new Transaction();
         transaction.accountId = accountId;
@@ -138,7 +138,7 @@ router.put('/:transactionId?', async (req: Request, res: Response) => {
             return;
         }
 
-        const rate = await getRate(account.currency.code, currency.code);
+        const rate = await getRate(account.currency.code, currency.code, dateTime);
 
         transaction.accountId = accountId;
         transaction.categoryId = categoryId || null;
