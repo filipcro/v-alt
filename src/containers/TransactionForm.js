@@ -12,7 +12,8 @@ const mapStateToProps = state => ({
     accounts: state.accounts,
     categories: state.categories,
     currencies: state.currencies,
-    transaction: state.selectedTransaction ? state.transactions[state.selectedTransaction] : null
+    transaction: state.selectedTransaction ? state.transactions[state.selectedTransaction] : null,
+    key: state.selectedTransaction ? state.transactions[state.selectedTransaction].id : 0
 });
 
 const mapDispatchToProps = dispatch => ({

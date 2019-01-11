@@ -101,7 +101,7 @@ input[type='checkbox'] {
   background-color: #e98f46;
 }
 
-td, th {
+ .Table td, .Table th {
   padding: 0.5em 1em;
 }
 

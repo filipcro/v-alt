@@ -18,7 +18,7 @@ const AccountBalance = ({
         ));
 
     return (
-        <table>
+        <table className="Table">
             <thead>
                 <tr>
                     <th>Račun</th>

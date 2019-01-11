@@ -90,42 +90,6 @@ class TransactionForm extends Component {
         this.setState({ dateTime: date });
     }
 
-    static getDerivedStateFromProps(props, state) {
-        const { transaction, accounts } = props;
-        const { transactionId, account } = state;
-
-        if (accounts && !account) {
-            return {
-                ...state,
-                account: Object.keys(accounts)[0]
-            };
-        }
-
-        if (transaction && transaction.id !== state.transactionId) {
-            return {
-                transactionId: transaction.id,
-                amount: transaction.amount,
-                currency: transaction.currencyId,
-                category: transaction.categoryId,
-                account: transaction.accountId,
-                dateTime: transaction.dateTime,
-                description: transaction.description
-            };
-        }
-
-        if (transactionId && !transaction) {
-            return {
-                transactionId: null,
-                amount: 0,
-                category: null,
-                dateTime: moment(),
-                description: ''
-            };
-        }
-
-        return null;
-    }
-
     checkChategoryAndAmount() {
         const { category, amount } = this.state;
         const { categories } = this.props;
