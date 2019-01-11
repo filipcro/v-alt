@@ -1,0 +1,21 @@
+.EditCategory {
+    max-width: 320px;
+    margin-bottom: 3em;
+}
+
+.EditCategory-form {
+    padding-left: 2em;
+}
+
+
+.EditCategory-add-account {
+    width: 100%;
+    background-color: #5fb324;
+    color: #fff;
+    padding: 10px;
+    border: none;
+}
+
+.EditCategory-add-account:hover {
+    background-color: #73cc33;
+}

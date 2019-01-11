@@ -1,0 +1,23 @@
+.TransactionListItem {
+    margin-bottom: 1em;
+    padding: 1em;
+    box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.4);
+}
+
+.TransactionListItem-row {
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (min-width: 600px) {
+    .TransactionListItem-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+.TransactionListItem-icon-group {
+    display: flex;
+    align-items: center;
+}
