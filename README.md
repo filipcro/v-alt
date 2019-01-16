@@ -19,7 +19,7 @@ It was done before GitHub had free private repositories so it was done using Git
 * TypeORM
 * Express
 
-Application screenshots
+### Application screenshots
 
 ![Sign Up](images/signup.png)
 ![Graphs](images/graphs.png)
